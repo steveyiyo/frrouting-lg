@@ -10,14 +10,12 @@ import (
 
 func lg(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
-	io.WriteString(w, "FRR Looking Glass\n\n")
+	// io.WriteString(w, "https://github.com/steveyiyo/frrouting-lg")
 
 	r.ParseForm()
 	fmt.Println(r.Form)
 	fmt.Println("method:", r.Method)
-	if r.Method == "GET" {
-
-	} else {
+	if r.Method == "POST" {
 		action := "NULL"
 		IP := "NULL"
 		for key, values := range r.Form {
@@ -30,22 +28,27 @@ func lg(w http.ResponseWriter, r *http.Request) {
 		fmt.Println("action: ", action)
 		fmt.Println("IP: ", IP)
 		if action == "ping" {
+			io.WriteString(w, "Running ping...\n\n")
 			io.WriteString(w, ping(IP))
-			fmt.Fprintf(w, IP)
 		}
 		if action == "traceroute" {
+			io.WriteString(w, "Running traceroute...\n\n")
 			io.WriteString(w, traceroute(IP))
 		}
 		if action == "mtr" {
+			io.WriteString(w, "Running mtr...\n\n")
 			io.WriteString(w, mtr(IP))
 		}
 		if action == "bgpsummary" {
+			io.WriteString(w, "Checking BGP Summary...\n\n")
 			io.WriteString(w, bgpsummary())
 		}
 		if action == "routev4" {
+			io.WriteString(w, "Checking BGP Route...\n\n")
 			io.WriteString(w, routev4(IP))
 		}
 		if action == "routev6" {
+			io.WriteString(w, "Checking BGP Route...\n\n")
 			io.WriteString(w, routev6(IP))
 		}
 	}
@@ -54,7 +57,7 @@ func lg(w http.ResponseWriter, r *http.Request) {
 func ping(IP string) string {
 	fmt.Print("Running ping...\n")
 
-	c := "ping -O -c 10 " + IP
+	c := "ping -O -c 5 " + IP
 	cmd := exec.Command("bash", "-c", c)
 	out, err := cmd.CombinedOutput()
 	if err != nil {
@@ -82,7 +85,7 @@ func traceroute(IP string) string {
 func mtr(IP string) string {
 	fmt.Print("Running mtr...\n")
 
-	c := "mtr -G 2 -c 10 -erwbz " + IP
+	c := "mtr -G 2 -c 5 -erwbz " + IP
 	cmd := exec.Command("bash", "-c", c)
 	out, err := cmd.CombinedOutput()
 	if err != nil {
@@ -136,6 +139,14 @@ func routev6(IP string) string {
 
 func main() {
 	http.HandleFunc("/", lg)
+
+	fmt.Print("-------------------\n")
+	fmt.Print("FRRouting Looking Glass\n")
+	fmt.Print("Port listing at 32991\n")
+	fmt.Print("Repo: https://github.com/steveyiyo/frrouting-lg\n")
+	fmt.Print("Author: SteveYi\n")
+	fmt.Print("Demo: https://network.steveyi.net/looking-glass\n")
+	fmt.Print("-------------------\n")
 
 	err := http.ListenAndServe(":32991", nil)
 	if err != nil {
