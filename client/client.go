@@ -18,7 +18,6 @@ func lg(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" {
 
 	} else {
-		// 判斷
 		action := "NULL"
 		IP := "NULL"
 		for key, values := range r.Form {
