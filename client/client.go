@@ -8,13 +8,9 @@ import (
 	"os/exec"
 )
 
-var (
-	SourceIP = "1.1.1.1"
-)
-
 func lg(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
-	io.WriteString(w, "FRRouting Looking Glass\n\n")
+	io.WriteString(w, "FRR Looking Glass\n\n")
 
 	r.ParseForm()
 	fmt.Println(r.Form)
@@ -36,35 +32,31 @@ func lg(w http.ResponseWriter, r *http.Request) {
 		fmt.Println("IP: ", IP)
 		if action == "ping" {
 			io.WriteString(w, ping(IP))
-			// fmt.Fprintf(w, "Unknow")
+			fmt.Fprintf(w, IP)
 		}
 		if action == "traceroute" {
 			io.WriteString(w, traceroute(IP))
-			// fmt.Fprintf(w, "Unknow")
 		}
 		if action == "mtr" {
 			io.WriteString(w, mtr(IP))
-			// fmt.Fprintf(w, "Unknow")
 		}
 		if action == "bgpsummary" {
 			io.WriteString(w, bgpsummary())
-			// fmt.Fprintf(w, "Unknow")
 		}
 		if action == "routev4" {
 			io.WriteString(w, routev4(IP))
-			// fmt.Fprintf(w, "Unknow")
 		}
 		if action == "routev6" {
 			io.WriteString(w, routev6(IP))
-			// fmt.Fprintf(w, "Unknow")
 		}
 	}
 }
 
 func ping(IP string) string {
-	fmt.Print("Client has been start!\n")
+	fmt.Print("Running ping...\n")
 
-	cmd := exec.Command("bash", "-c", "ping -I", SourceIP, "-O -c 10", IP)
+	c := "ping -O -c 10 " + IP
+	cmd := exec.Command("bash", "-c", c)
 	out, err := cmd.CombinedOutput()
 	if err != nil {
 		fmt.Println(err)
@@ -75,9 +67,10 @@ func ping(IP string) string {
 }
 
 func traceroute(IP string) string {
-	fmt.Print("Client has been start!\n")
+	fmt.Print("Running traceroute...\n")
 
-	cmd := exec.Command("bash", "-c", "traceroute", IP, "-a", SourceIP)
+	c := "traceroute " + IP
+	cmd := exec.Command("bash", "-c", c)
 	out, err := cmd.CombinedOutput()
 	if err != nil {
 		fmt.Println(err)
@@ -88,9 +81,10 @@ func traceroute(IP string) string {
 }
 
 func mtr(IP string) string {
-	fmt.Print("Client has been start!\n")
+	fmt.Print("Running mtr...\n")
 
-	cmd := exec.Command("bash", "-c", "mtr -G 2 -c 10 -erwbz", IP, "--address", SourceIP)
+	c := "mtr -G 2 -c 10 -erwbz " + IP
+	cmd := exec.Command("bash", "-c", c)
 	out, err := cmd.CombinedOutput()
 	if err != nil {
 		fmt.Println(err)
@@ -101,7 +95,7 @@ func mtr(IP string) string {
 }
 
 func bgpsummary() string {
-	fmt.Print("Client has been start!\n")
+	fmt.Print("Checking BGP Summary...\n")
 
 	cmd := exec.Command("bash", "-c", "vtysh -c 'show bgp summary'")
 	out, err := cmd.CombinedOutput()
@@ -114,9 +108,10 @@ func bgpsummary() string {
 }
 
 func routev4(IP string) string {
-	fmt.Print("Client has been start!\n")
+	fmt.Print("Checking BGP Route...\n")
 
-	cmd := exec.Command("bash", "-c", "vtysh -c 'show ip bgp $ip'")
+	c := "vtysh -c 'show ip bgp " + IP + "'"
+	cmd := exec.Command("bash", "-c", c)
 	out, err := cmd.CombinedOutput()
 	if err != nil {
 		fmt.Println(err)
@@ -127,9 +122,10 @@ func routev4(IP string) string {
 }
 
 func routev6(IP string) string {
-	fmt.Print("Client has been start!\n")
+	fmt.Print("Checking BGP Route...\n")
 
-	cmd := exec.Command("bash", "-c", "vtysh -c 'show bgp $ip'")
+	c := "vtysh -c 'show bgp " + IP + "'"
+	cmd := exec.Command("bash", "-c", c)
 	out, err := cmd.CombinedOutput()
 	if err != nil {
 		fmt.Println(err)
