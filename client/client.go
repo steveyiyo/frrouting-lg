@@ -51,76 +51,82 @@ func lg(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func ping(IP string) {
+func ping(IP string) (string, error) {
 	fmt.Print("Client has been start!\n")
 
 	cmd := exec.Command("bash", "-c", "ping -I", SourceIP, "-O -c 10", IP)
 	out, err := cmd.CombinedOutput()
 	if err != nil {
 		fmt.Println(err)
-		return
+		return string(out), err
 	}
 	fmt.Println(string(out))
+	return string(out), err
 }
 
-func traceroute(IP string) string {
+func traceroute(IP string) (string, error) {
 	fmt.Print("Client has been start!\n")
 
 	cmd := exec.Command("bash", "-c", "traceroute", IP, "-a", SourceIP)
 	out, err := cmd.CombinedOutput()
 	if err != nil {
 		fmt.Println(err)
+		return string(out), err
 	}
 	fmt.Println(string(out))
-	return string(out)
+	return string(out), err
 }
 
-func mtr(IP string) {
+func mtr(IP string) (string, error) {
 	fmt.Print("Client has been start!\n")
 
 	cmd := exec.Command("bash", "-c", "mtr -G 2 -c 10 -erwbz", IP, "--address", SourceIP)
 	out, err := cmd.CombinedOutput()
 	if err != nil {
 		fmt.Println(err)
+		return string(out), err
 	}
 	fmt.Println(string(out))
-	return
+	return string(out), err
 }
 
-func bgpsummary() {
+func bgpsummary() (string, error) {
 	fmt.Print("Client has been start!\n")
 
 	cmd := exec.Command("bash", "-c", "vtysh -c 'show bgp summary'")
 	out, err := cmd.CombinedOutput()
 	if err != nil {
 		fmt.Println(err)
+		return string(out), err
 	}
 	fmt.Println(string(out))
-	return
+	return string(out), err
 }
 
-func routev4(IP string) {
+func routev4(IP string) (string, error) {
 	fmt.Print("Client has been start!\n")
 
 	cmd := exec.Command("bash", "-c", "vtysh -c 'show ip bgp $ip'")
 	out, err := cmd.CombinedOutput()
 	if err != nil {
 		fmt.Println(err)
+		return string(out), err
 	}
 	fmt.Println(string(out))
-	return
+	return string(out), err
 }
 
-func routev6(IP string) {
+func routev6(IP string) (string, error) {
 	fmt.Print("Client has been start!\n")
 
 	cmd := exec.Command("bash", "-c", "vtysh -c 'show bgp $ip'")
 	out, err := cmd.CombinedOutput()
 	if err != nil {
 		fmt.Println(err)
+		return string(out), err
 	}
 	fmt.Println(string(out))
-	return
+	return string(out), err
 }
 
 func main() {
