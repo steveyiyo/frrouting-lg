@@ -6,6 +6,7 @@ import (
 	"log"
 	"net/http"
 	"net/url"
+	"os"
 )
 
 func lg(w http.ResponseWriter, r *http.Request) {
@@ -34,6 +35,13 @@ func lg(w http.ResponseWriter, r *http.Request) {
 				IP = values[0]
 			}
 		}
+
+		jsonFile, err := os.Open("router.json")
+		if err != nil {
+			fmt.Println(err)
+		}
+		defer jsonFile.Close()
+
 		resp, err := http.PostForm("http://", json.IP,
 			url.Values{"action": {action}, "IP": {IP}})
 		if err != nil {
