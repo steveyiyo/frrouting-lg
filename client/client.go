@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"io"
 	"log"
 	"net/http"
 	"os/exec"
@@ -13,7 +14,7 @@ var (
 
 func lg(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
-	w.Write([]byte(`FRRouting Looking Glass\n`))
+	io.WriteString(w, "FRRouting Looking Glass\n\n")
 
 	r.ParseForm()
 	fmt.Println(r.Form)
@@ -22,111 +23,120 @@ func lg(w http.ResponseWriter, r *http.Request) {
 
 	} else {
 		// 判斷
-		action := r.Form["action"][0]
-		IP := r.Form["IP"][0]
+		action := "NULL"
+		IP := "NULL"
+		for key, values := range r.Form {
+			if key == "action" {
+				action = values[0]
+			} else {
+				IP = values[0]
+			}
+		}
+		fmt.Println("action: ", action)
+		fmt.Println("IP: ", IP)
 		if action == "ping" {
-			ping(IP)
+			io.WriteString(w, ping(IP))
 			// fmt.Fprintf(w, "Unknow")
 		}
 		if action == "traceroute" {
-			traceroute(IP)
-			fmt.Fprintf(w, "Unknow")
+			io.WriteString(w, traceroute(IP))
+			// fmt.Fprintf(w, "Unknow")
 		}
 		if action == "mtr" {
-			mtr(IP)
-			fmt.Fprintf(w, "Unknow")
+			io.WriteString(w, mtr(IP))
+			// fmt.Fprintf(w, "Unknow")
 		}
 		if action == "bgpsummary" {
-			bgpsummary()
-			fmt.Fprintf(w, "Unknow")
+			io.WriteString(w, bgpsummary())
+			// fmt.Fprintf(w, "Unknow")
 		}
 		if action == "routev4" {
-			routev4(IP)
-			fmt.Fprintf(w, "Unknow")
+			io.WriteString(w, routev4(IP))
+			// fmt.Fprintf(w, "Unknow")
 		}
 		if action == "routev6" {
-			routev6(IP)
-			fmt.Fprintf(w, "Unknow")
+			io.WriteString(w, routev6(IP))
+			// fmt.Fprintf(w, "Unknow")
 		}
 	}
 }
 
-func ping(IP string) (string, error) {
+func ping(IP string) string {
 	fmt.Print("Client has been start!\n")
 
 	cmd := exec.Command("bash", "-c", "ping -I", SourceIP, "-O -c 10", IP)
 	out, err := cmd.CombinedOutput()
 	if err != nil {
 		fmt.Println(err)
-		return string(out), err
+		return "An error occurred"
 	}
 	fmt.Println(string(out))
-	return string(out), err
+	return string(out)
 }
 
-func traceroute(IP string) (string, error) {
+func traceroute(IP string) string {
 	fmt.Print("Client has been start!\n")
 
 	cmd := exec.Command("bash", "-c", "traceroute", IP, "-a", SourceIP)
 	out, err := cmd.CombinedOutput()
 	if err != nil {
 		fmt.Println(err)
-		return string(out), err
+		return "An error occurred"
 	}
 	fmt.Println(string(out))
-	return string(out), err
+	return string(out)
 }
 
-func mtr(IP string) (string, error) {
+func mtr(IP string) string {
 	fmt.Print("Client has been start!\n")
 
 	cmd := exec.Command("bash", "-c", "mtr -G 2 -c 10 -erwbz", IP, "--address", SourceIP)
 	out, err := cmd.CombinedOutput()
 	if err != nil {
 		fmt.Println(err)
-		return string(out), err
+		return "An error occurred"
 	}
 	fmt.Println(string(out))
-	return string(out), err
+	return string(out)
 }
 
-func bgpsummary() (string, error) {
+func bgpsummary() string {
 	fmt.Print("Client has been start!\n")
 
 	cmd := exec.Command("bash", "-c", "vtysh -c 'show bgp summary'")
 	out, err := cmd.CombinedOutput()
 	if err != nil {
 		fmt.Println(err)
-		return string(out), err
+		return "An error occurred"
 	}
 	fmt.Println(string(out))
-	return string(out), err
+	return string(out)
 }
 
-func routev4(IP string) (string, error) {
+func routev4(IP string) string {
 	fmt.Print("Client has been start!\n")
 
 	cmd := exec.Command("bash", "-c", "vtysh -c 'show ip bgp $ip'")
 	out, err := cmd.CombinedOutput()
 	if err != nil {
 		fmt.Println(err)
-		return string(out), err
+		return "An error occurred"
 	}
 	fmt.Println(string(out))
-	return string(out), err
+	return string(out)
 }
 
-func routev6(IP string) (string, error) {
+func routev6(IP string) string {
 	fmt.Print("Client has been start!\n")
 
 	cmd := exec.Command("bash", "-c", "vtysh -c 'show bgp $ip'")
 	out, err := cmd.CombinedOutput()
 	if err != nil {
 		fmt.Println(err)
-		return string(out), err
+		return "An error occurred"
 	}
 	fmt.Println(string(out))
-	return string(out), err
+	return string(out)
 }
 
 func main() {
