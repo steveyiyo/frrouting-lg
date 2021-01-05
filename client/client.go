@@ -16,38 +16,38 @@ func lg(w http.ResponseWriter, r *http.Request) {
 	fmt.Println(r.Form)
 	fmt.Println("method:", r.Method)
 	if r.Method == "POST" {
-		action := "NULL"
+		Action := "NULL"
 		IP := "NULL"
 		for key, values := range r.Form {
-			if key == "action" {
-				action = values[0]
+			if key == "Action" {
+				Action = values[0]
 			} else {
 				IP = values[0]
 			}
 		}
-		fmt.Println("action: ", action)
+		fmt.Println("Action: ", Action)
 		fmt.Println("IP: ", IP)
-		if action == "ping" {
+		if Action == "ping" {
 			io.WriteString(w, "Running ping...\n\n")
 			io.WriteString(w, ping(IP))
 		}
-		if action == "traceroute" {
+		if Action == "traceroute" {
 			io.WriteString(w, "Running traceroute...\n\n")
 			io.WriteString(w, traceroute(IP))
 		}
-		if action == "mtr" {
+		if Action == "mtr" {
 			io.WriteString(w, "Running mtr...\n\n")
 			io.WriteString(w, mtr(IP))
 		}
-		if action == "bgpsummary" {
+		if Action == "bgpsummary" {
 			io.WriteString(w, "Checking BGP Summary...\n\n")
 			io.WriteString(w, bgpsummary())
 		}
-		if action == "routev4" {
+		if Action == "routev4" {
 			io.WriteString(w, "Checking BGP Route...\n\n")
 			io.WriteString(w, routev4(IP))
 		}
-		if action == "routev6" {
+		if Action == "routev6" {
 			io.WriteString(w, "Checking BGP Route...\n\n")
 			io.WriteString(w, routev6(IP))
 		}
