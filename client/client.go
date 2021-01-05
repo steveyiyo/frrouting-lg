@@ -140,13 +140,17 @@ func routev6(IP string) string {
 func main() {
 	http.HandleFunc("/", lg)
 
+	fmt.Print("\n")
 	fmt.Print("-------------------\n")
+	fmt.Print("\n")
 	fmt.Print("FRRouting Looking Glass\n")
 	fmt.Print("Port listing at 32991\n")
 	fmt.Print("Repo: https://github.com/steveyiyo/frrouting-lg\n")
 	fmt.Print("Author: SteveYi\n")
 	fmt.Print("Demo: https://network.steveyi.net/looking-glass\n")
+	fmt.Print("\n")
 	fmt.Print("-------------------\n")
+	fmt.Print("\n")
 
 	err := http.ListenAndServe(":32991", nil)
 	if err != nil {

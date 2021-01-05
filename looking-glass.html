@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='utf-8'>
+    <title>Peering request</title>
+    <link rel='shortcut icon' href='https://static.yiy.tw/media/logo/Yi_logo.png'>
+    <script src="https://www.recaptcha.net/recaptcha/api.js" async defer
+        type="aee8c2557e1ab30419418148-text/javascript"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/alphardex/aqua.css/dist/aqua.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Recursive:wght@600;800&display=swap" rel="stylesheet">
+    <style>
+        body,
+        html {
+            font-family: 'Recursive', sans-serif;
+            background-color: #f3f3f3;
+        }
+
+        img {
+            width: 70px;
+            text-align: center;
+            margin: auto;
+            vertical-align: middle;
+        }
+
+        h1 {
+            text-shadow: #6A6A6A 1px -2px;
+            font-weight: 70px;
+            display: inline-block;
+            vertical-align: middle;
+        }
+    </style>
+</head>
+
+<body>
+    <table style="width:auto;margin:auto;">
+        <tr>
+            <td>
+                <h1>Looking Glass </h1>
+                <form action="http://10.121.211.254:32991/" method='post'>
+                    IP: <input type='text' name='IP'><br><br>
+                    Action: <select name="action" required>
+                        <option value="ping">ping</option>
+                        <option value="traceroute">traceroute</option>
+                        <option value="mtr">mtr</option>
+                        <option value="bgpsummary">bgpsummary</option>
+                        <option value="routev4">routev4</option>
+                        <option value="routev6">routev6</option>
+                    <!-- </select><br><br> Router: <select name="router" required>
+                        <option value="jp-router">jp-router</option>
+                        <option value="us-router">us-router</option>
+                        <option value="eu-router">eu-router</option>
+                    </select><br> -->
+                    <div class='captcha_wrapper'>
+                        <div class='g-recaptcha' data-sitekey=6LdkGd8UAAAAAM2gOhnVwf64D2arRTf0OXI6tNSy>
+                        </div>
+                    </div><br>
+                    <input type='submit' value=Start! class='btn btn-primary '>
+                </form>
+            </td>
+        </tr>
+    </table>
+
+</html>
