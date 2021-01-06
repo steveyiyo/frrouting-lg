@@ -210,6 +210,7 @@ func lg(w http.ResponseWriter, r *http.Request) {
 							let formData = new FormData();
 							formData.append('Action', this.form.action);
 							formData.append('IP', this.form.target);
+							formData.append('SERVERS', this.form.target);
 							fetch(SERVER_URL, {
 								method: "POST",
 								body: formData
@@ -236,7 +237,7 @@ func lg(w http.ResponseWriter, r *http.Request) {
 	} else if r.Method == "POST" {
 		err := r.ParseMultipartForm(5 * 1024 * 1024 * 1024)
 		if err != nil {
-			fmt.Println("Error ParseMultipartForm: ", err) // here it fails !!! with: "multipart: NextPart: EOF"
+			fmt.Println("Error ParseMultipartForm: ", err)
 			return
 		}
 
@@ -244,12 +245,6 @@ func lg(w http.ResponseWriter, r *http.Request) {
 
 		var router router
 		json.Unmarshal(data, &router)
-
-		for n := range router {
-			if router[n].Name == "jp-router" {
-				fmt.Println("JP Router IP: ", router[n].IP)
-			}
-		}
 
 		// fmt.Println(router)
 
@@ -265,7 +260,17 @@ func lg(w http.ResponseWriter, r *http.Request) {
 		fmt.Println("IP: ", IP)
 		fmt.Println("Router: ", Router)
 
-		resp, err := http.PostForm("http://10.121.211.254:32991",
+		var RouterIP string
+		RouterIP = "NULL"
+		for n := range router {
+			if router[n].Name == Router {
+				fmt.Println("Router IP: ", router[n].IP)
+				RouterIP = router[n].IP
+			}
+		}
+
+		RouterURL := "http://" + RouterIP + ":32991"
+		resp, err := http.PostForm(RouterURL,
 			url.Values{"Action": {Action}, "IP": {IP}})
 		if err != nil {
 			fmt.Println(err)
