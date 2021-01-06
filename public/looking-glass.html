@@ -19,7 +19,8 @@
     <!-- Style -->
     <style>
         * {
-            font-family: "SF Pro TC", "SF Pro Text", "SF Pro Icons", "PingFang TC", "Helvetica Neue", "Helvetica", "Arial", "Microsoft JhengHei", wf_SegoeUI, "Segoe UI", Segoe, "Segoe WP", Tahoma, Verdana, Ubuntu, "Bitstream Vera Sans", "DejaVu Sans", Tahoma, 微軟正黑體, "LiHei Pro", "WenQuanYi Micro Hei", "Droid Sans Fallback", "AR PL UMing TW", Roboto, "Helvetica Neue", "Hiragino Maru Gothic ProN", メイリオ, "ヒラギノ丸ゴ ProN W4", Meiryo, "Droid Sans", sans-serif
+            font-family: "SF Pro TC", "SF Pro Text", "SF Pro Icons", "PingFang TC", "Helvetica Neue", "Helvetica", "Arial", "Microsoft JhengHei", wf_SegoeUI, "Segoe UI", Segoe, "Segoe WP", Tahoma, Verdana, Ubuntu, "Bitstream Vera Sans", "DejaVu Sans", Tahoma, 微軟正黑體, "LiHei Pro", "WenQuanYi Micro Hei", "Droid Sans Fallback", "AR PL UMing TW", Roboto, "Helvetica Neue", "Hiragino Maru Gothic ProN", メイリオ, "ヒラギノ丸ゴ ProN W4", Meiryo, "Droid Sans", sans-serif;
+            transition: background-color ease-in-out 0.4s, color ease-in-out 0.4s;
         }
 
         html {
@@ -28,22 +29,24 @@
 
         body {
             min-height: 100%;
+        }
+
+        body.light {
             background-color: #F2F2F2;
         }
 
         body.dark {
-            background-color: #222222 !important;
+            background-color: #222222;
         }
 
-        * {
+        .light * {
             background: #F2F2F2;
             color: #222222;
-            transition: 0.4s background-color, color;
         }
 
         .dark * {
-            background: #222222 !important;
-            color: #F2F2F2 !important;
+            background: #222222;
+            color: #F2F2F2;
         }
 
         body {
@@ -54,7 +57,7 @@
         }
 
         .container {
-            transition: 0.6s;
+            transition: box-shadow ease-in-out 0.4s;
             padding: 2em;
             border-radius: 5px;
             -webkit-box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.75);
@@ -73,7 +76,7 @@
             padding: 1em;
             border-radius: 5px;
             border: 2px lightgray solid;
-            transition: 0.4s;
+            transition: box-shadow ease-in-out 0.4s, filter ease-in-out 0.4s;
             width: 100%;
             cursor: pointer;
             font-weight: bold;
@@ -96,6 +99,10 @@
             cursor: auto;
         }
 
+        label {
+            background: transparent !important;
+        }
+
         select,
         input {
             min-width: 30vw;
@@ -105,7 +112,7 @@
             border: 0;
             width: 100% !important;
             border-radius: 5px;
-            transition: 0.5s;
+            transition: box-shadow ease-in-out 0.4s;
             box-sizing: border-box;
             -moz-box-sizing: border-box;
         }
@@ -136,14 +143,14 @@
             box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.75);
         }
 
-        .result * {
+        .light .result * {
             background: #222222;
             color: #F2F2F2;
         }
 
         .dark .result * {
-            background: #F2F2F2 !important;
-            color: #222222 !important;
+            background: #F2F2F2;
+            color: #222222;
         }
 
         .result>.topbar {
@@ -190,12 +197,12 @@
     </style>
 </head>
 
-<body>
+<body class="light">
     <h1> FRR Looking Glass </h1>
 
     <div class="container" id="app" v-cloak>
         <textarea ref="copyInput" style="opacity:0;height:0;margin:0;padding:0;border:0"></textarea>
-        <button @click="toggleDarkMode">{{darkMode ? "Light Mode" : "Dark Mode"}}</button>
+        <button @click="toggleDarkMode">{{darkMode ? "Disable Dark Mode" : "Enable Dark Mode"}}</button>
         <div>
             <div class="result" v-for="result in results" :key="result.uuid" :style="result.move.style">
                 <div class="topbar" @mousedown="mousedown(result,$event)" @mouseup="mouseup(result,$event)"
@@ -293,7 +300,7 @@
                 document.body.addEventListener("touchmove", this.mousemove)
 
                 this.darkMode = localStorage.getItem('darkmode') == "true";
-                document.body.className = this.darkMode ? "dark" : ""
+                document.body.className = this.darkMode ? "dark" : "light"
             },
             methods: {
                 sendRequest() {
@@ -358,7 +365,7 @@
                 },
                 toggleDarkMode() {
                     this.darkMode = !this.darkMode
-                    document.body.className = this.darkMode ? "dark" : ""
+                    document.body.className = this.darkMode ? "dark" : "light"
                     localStorage.setItem('darkmode', this.darkMode);
                 },
 
