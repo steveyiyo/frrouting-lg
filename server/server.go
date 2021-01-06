@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"io"
 	"io/ioutil"
@@ -8,6 +9,12 @@ import (
 	"net/http"
 	"net/url"
 )
+
+type router []struct {
+	ID   string `json:"id"`
+	Name string `json:"name"`
+	IP   string `json:"ip"`
+}
 
 func lg(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
@@ -232,6 +239,12 @@ func lg(w http.ResponseWriter, r *http.Request) {
 			fmt.Println("Error ParseMultipartForm: ", err) // here it fails !!! with: "multipart: NextPart: EOF"
 			return
 		}
+
+		data, err := ioutil.ReadFile("router.json")
+
+		var router router
+		json.Unmarshal(data, &router)
+		// fmt.Println(router)
 
 		Router := "NULL"
 		Action := "NULL"
