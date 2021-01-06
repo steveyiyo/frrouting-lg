@@ -120,30 +120,6 @@
     <!-- Scripts -->
     <script src="https://unpkg.com/vue@next"></script>
 
-
-    <script>
-        $('button').click(function(e) {
-            e.preventDefault();
-            var formData = {
-                'IP': $('input[name=IP]').val(),
-                'Action': $('select[name=Action]').val(),
-            };
-            $.ajax({
-                url: '',
-                data: formData,
-                processData: true,
-                type: "POST",
-                encode: true,
-                success: function(data) {
-                    console.log(data);
-                },
-                error: function(data) {
-                    alert('An error occurred');
-                }
-            })
-        });
-    </script>
-
     <script>
         const ACTIONS = [{
             name: "Ping",
