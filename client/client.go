@@ -31,42 +31,48 @@ func lg(w http.ResponseWriter, r *http.Request) {
 		fmt.Println("Action: ", Action)
 		fmt.Println("IP: ", IP)
 
-		if net.ParseIP(IP) == nil {
-			export := "IP Address: '" + IP + "' - Invalid \n"
-			fmt.Printf(export)
-			io.WriteString(w, export)
-			IP = "NULL"
-		} else {
-			export := "IP Address: '" + IP + "' - Valid \n"
-			fmt.Printf(export)
-			io.WriteString(w, export)
-
-			if Action == "ping" {
-				io.WriteString(w, "Running ping...\n\n")
-				io.WriteString(w, ping(IP))
-			}
-			if Action == "traceroute" {
-				io.WriteString(w, "Running traceroute...\n\n")
-				io.WriteString(w, traceroute(IP))
-			}
-			if Action == "mtr" {
-				io.WriteString(w, "Running mtr...\n\n")
-				io.WriteString(w, mtr(IP))
-			}
+		if IP == "" {
 			if Action == "bgpsummary" {
 				io.WriteString(w, "Checking BGP Summary...\n\n")
 				io.WriteString(w, bgpsummary())
 			}
-			if Action == "routev4" {
-				io.WriteString(w, "Checking BGP Route...\n\n")
-				io.WriteString(w, routev4(IP))
-			}
-			if Action == "routev6" {
-				io.WriteString(w, "Checking BGP Route...\n\n")
-				io.WriteString(w, routev6(IP))
+		} else {
+			if net.ParseIP(IP) == nil {
+				export := "IP Address: '" + IP + "' - Invalid \n"
+				fmt.Printf(export)
+				io.WriteString(w, export)
+				IP = "NULL"
+			} else {
+				export := "IP Address: '" + IP + "' - Valid \n"
+				fmt.Printf(export)
+				io.WriteString(w, export)
+
+				if Action == "ping" {
+					io.WriteString(w, "Running ping...\n\n")
+					io.WriteString(w, ping(IP))
+				}
+				if Action == "traceroute" {
+					io.WriteString(w, "Running traceroute...\n\n")
+					io.WriteString(w, traceroute(IP))
+				}
+				if Action == "mtr" {
+					io.WriteString(w, "Running mtr...\n\n")
+					io.WriteString(w, mtr(IP))
+				}
+				if Action == "routev4" {
+					io.WriteString(w, "Checking BGP Route...\n\n")
+					io.WriteString(w, routev4(IP))
+				}
+				if Action == "routev6" {
+					io.WriteString(w, "Checking BGP Route...\n\n")
+					io.WriteString(w, routev6(IP))
+				}
+				if Action == "bgpsummary" {
+					io.WriteString(w, "Checking BGP Summary...\n\n")
+					io.WriteString(w, bgpsummary())
+				}
 			}
 		}
-
 	}
 }
 
