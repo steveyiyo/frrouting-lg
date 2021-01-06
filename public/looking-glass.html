@@ -86,6 +86,15 @@
             box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.75);
         }
 
+        button[disabled]{
+            opacity: 0.4;
+            cursor:auto;
+        }
+        button[disabled]:hover{
+            opacity: 0;
+            cursor:auto;
+        }
+
         input {}
 
         select {}
@@ -165,7 +174,7 @@
     <h1> FRR Looking Glass </h1>
 
     <div class="container" id="app" v-cloak>
-        <input ref="copyInput" style="opacity:0;height:0;margin:0;padding:0;border:0" />
+        <textarea ref="copyInput" style="opacity:0;height:0;margin:0;padding:0;border:0"></textarea>
         <button @click="toggleDarkMode">{{darkMode ? "Light Mode" : "Dark Mode"}}</button>
         <div>
             <div class="result" v-for="result in results" :key="result.uuid" :style="result.move.style">
@@ -196,7 +205,7 @@
         </select>
         <label>Target :</label>
         <input v-model="form.target">
-        <button @click="sendRequest">Start !</button>
+        <button @click="sendRequest" :disabled="floodWait">Start !</button>
         </form>
     </div>
 
@@ -235,7 +244,7 @@
             value: "eu-router"
         },]
 
-        const SERVER_URL = "http://10.121.211.254:32280/"
+        const SERVER_URL = "/"
 
         const app = {
             data() {
@@ -256,7 +265,7 @@
 
                     focusedResult: null,
                     results: [],
-                    error: false
+                    floodWait: false
                 }
             },
             mounted() {
@@ -265,8 +274,14 @@
             },
             methods: {
                 sendRequest() {
+                    if (this.floodWait) return
+                    
+                    this.floodWait = true
+                    setTimeout(_ => { this.floodWait = false }, 5000);
+
+                    let uuid = Math.random().toString()
                     let result = {
-                        uuid: Math.random().toString(),
+                        uuid: uuid,
                         server: this.form.server,
                         action: this.form.action,
                         target: this.form.target,
@@ -294,17 +309,18 @@
                     })
                         .then(response => {
                             if (response.ok) {
-                                return _.text()
+                                return response.text()
                             }
                             else {
-                                console.log(response)
+                                console.error(response)
+                                this.results.find(_ => uuid == _.uuid).content = "Request error."
                             }
                         })
                         .then(response => {
-                            result.content = response
+                            this.results.find(_ => uuid == _.uuid).content = response
                         })
                         .catch(error => {
-                            result.content = "Request error.\nError : " + error.message
+                            this.results.find(_ => uuid == _.uuid).content = "Request error.\nError : " + error.message
                         })
                 },
                 copyResult(result) {
