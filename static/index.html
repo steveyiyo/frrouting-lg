@@ -13,48 +13,53 @@
     <link rel='shortcut icon' href='https://static.yiy.tw/media/logo/Yi_logo.png'>
 
     <!-- CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.css" integrity="sha256-WAgYcAck1C1/zEl5sBl5cfyhxtLgKGdpI3oKyJffVRI=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.css"
+        integrity="sha256-WAgYcAck1C1/zEl5sBl5cfyhxtLgKGdpI3oKyJffVRI=" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;400;600;700&family=Roboto:ital,wght@0,400;0,500;0,700;1,300&display=swap"
+        rel="stylesheet">
 
     <!-- Style -->
     <style>
         * {
-            font-family: "SF Pro TC", "SF Pro Text", "SF Pro Icons", "PingFang TC", "Helvetica Neue", "Helvetica", "Arial", "Microsoft JhengHei", wf_SegoeUI, "Segoe UI", Segoe, "Segoe WP", Tahoma, Verdana, Ubuntu, "Bitstream Vera Sans", "DejaVu Sans", Tahoma, 微軟正黑體, "LiHei Pro", "WenQuanYi Micro Hei", "Droid Sans Fallback", "AR PL UMing TW", Roboto, "Helvetica Neue", "Hiragino Maru Gothic ProN", メイリオ, "ヒラギノ丸ゴ ProN W4", Meiryo, "Droid Sans", sans-serif;
+            font-family: "Roboto", "SF Pro TC", "SF Pro Text", "SF Pro Icons", "PingFang TC", "Helvetica Neue", "Helvetica", "Arial", "Microsoft JhengHei", wf_SegoeUI, "Segoe UI", Segoe, "Segoe WP", Tahoma, Verdana, Ubuntu, "Bitstream Vera Sans", "DejaVu Sans", Tahoma, 微軟正黑體, "LiHei Pro", "WenQuanYi Micro Hei", "Droid Sans Fallback", "AR PL UMing TW", Roboto, "Helvetica Neue", "Hiragino Maru Gothic ProN", メイリオ, "ヒラギノ丸ゴ ProN W4", Meiryo, "Droid Sans", sans-serif;
             transition: background-color ease-in-out 0.4s, color ease-in-out 0.4s;
         }
-        
+
         html {
             height: 100%;
         }
-        
+
         body {
             min-height: 100%;
         }
-        
+
         body.light {
             background-color: #F2F2F2;
         }
-        
+
         body.dark {
             background-color: #222222;
         }
-        
+
         .light * {
             background: #F2F2F2;
             color: #222222;
         }
-        
+
         .dark * {
             background: #222222;
             color: #F2F2F2;
         }
-        
+
         body {
             display: flex;
             justify-content: center;
             align-items: center;
             flex-direction: column;
         }
-        
+
         .container {
             transition: box-shadow ease-in-out 0.4s;
             padding: 2em;
@@ -65,12 +70,12 @@
             display: flex;
             flex-direction: column;
         }
-        
+
         .container>* {
             margin-top: 0.5em;
             width: 100%;
         }
-        
+
         button {
             padding: 1em;
             border-radius: 5px;
@@ -80,28 +85,28 @@
             cursor: pointer;
             font-weight: bold;
         }
-        
+
         button:hover {
             filter: invert(90%) hue-rotate(180deg);
             -webkit-box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.75);
             -moz-box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.75);
             box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.75);
         }
-        
+
         button[disabled] {
             opacity: 0.4;
             cursor: auto;
         }
-        
+
         button[disabled]:hover {
             opacity: 0;
             cursor: auto;
         }
-        
+
         label {
             background: transparent !important;
         }
-        
+
         select,
         input {
             min-width: 30vw;
@@ -115,18 +120,18 @@
             box-sizing: border-box;
             -moz-box-sizing: border-box;
         }
-        
+
         select:focus,
         input:focus {
             -webkit-box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.75);
             -moz-box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.75);
             box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.75);
         }
-        
+
         [v-cloak] {
             opacity: 0;
         }
-        
+
         .result {
             position: fixed;
             top: 5%;
@@ -139,17 +144,17 @@
             -moz-box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.75);
             box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.75);
         }
-        
+
         .light .result * {
             background: #222222;
             color: #F2F2F2;
         }
-        
+
         .dark .result * {
             background: #F2F2F2;
             color: #222222;
         }
-        
+
         .result>.topbar {
             filter: invert(10%) hue-rotate(10deg);
             padding: 15px 20px 15px 20px;
@@ -158,18 +163,18 @@
             justify-content: space-between;
             align-items: center;
         }
-        
+
         .result>.topbar>.title {
             text-align: center;
             flex-grow: 4;
         }
-        
+
         .result>.topbar>.buttons {
             text-align: center;
             display: flex;
             flex-direction: row;
         }
-        
+
         .result>.topbar>.buttons>div {
             border-radius: 5px;
             margin-left: 5px;
@@ -183,10 +188,12 @@
             align-items: center;
             cursor: pointer;
         }
-        
+
         .result>.content {
+            font-family: "Roboto Mono", monospace !important;
             min-width: 20vw;
             max-width: 80vw;
+            max-height: 70vh;
             overflow: auto;
             margin: 0;
             padding: 10px 20px 10px 20px;
@@ -202,7 +209,8 @@
         <button @click="toggleDarkMode">{{darkMode ? "Disable Dark Mode" : "Enable Dark Mode"}}</button>
         <div>
             <div class="result" v-for="result in results" :key="result.uuid" :style="result.move.style">
-                <div class="topbar" @mousedown="mousedown(result,$event)" @mouseup="mouseup(result,$event)" @touchstart="mousedown(result,$event)" @touchend="mouseup(result,$event)">
+                <div class="topbar" @mousedown="mousedown(result,$event)" @mouseup="mouseup(result,$event)"
+                    @touchstart="mousedown(result,$event)" @touchend="mouseup(result,$event)">
                     <span class="title">
                         you@{{result.server}}:~# {{result.action}} {{result.target}}</span>
                     <div class="buttons">
@@ -254,7 +262,7 @@
         }, {
             name: "BGP Route V6",
             value: "routev6"
-        }, ]
+        },]
 
         const SERVERS = [{
             name: "JP",
@@ -265,7 +273,7 @@
         }, {
             name: "EU",
             value: "eu-router"
-        }, ]
+        },]
 
         const SERVER_URL = "/"
 
@@ -335,9 +343,9 @@
                     formData.append('IP', this.form.target);
 
                     fetch(SERVER_URL, {
-                            method: "POST",
-                            body: formData
-                        })
+                        method: "POST",
+                        body: formData
+                    })
                         .then(response => {
                             if (response.ok) {
                                 return response.text()
@@ -382,7 +390,7 @@
                     result.move.prevX = x
                     result.move.prevY = y
                     this.focusedResult = result
-                    result.move.style.zIndex = Math.max.apply(Math, this.results.map(function(result) {
+                    result.move.style.zIndex = Math.max.apply(Math, this.results.map(function (result) {
                         return result.move.style.zIndex;
                     })) + 1
                 },
