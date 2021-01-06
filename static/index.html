@@ -211,8 +211,7 @@
             <div class="result" v-for="result in results" :key="result.uuid" :style="result.move.style">
                 <div class="topbar" @mousedown="mousedown(result,$event)" @mouseup="mouseup(result,$event)"
                     @touchstart="mousedown(result,$event)" @touchend="mouseup(result,$event)">
-                    <span class="title">
-                        you@{{result.server}}:~# {{result.action}} {{result.target}}</span>
+                    <span class="title">{{result.title}}</span>
                     <div class="buttons">
                         <div @click="copyResult(result)">Copy</div>
                         <div @click="closeResult(result)">X</div>
@@ -289,9 +288,9 @@
                         SERVERS
                     },
                     form: {
-                        server: null,
-                        action: null,
-                        target: null
+                        server: "",
+                        action: "",
+                        target: ""
                     },
 
                     focusedResult: null,
@@ -302,12 +301,14 @@
             mounted() {
                 document.body.addEventListener("mousemove", this.mousemove)
                 document.body.addEventListener("touchmove", this.mousemove)
+                document.body.addEventListener("mouseleave", this.mouseup)
 
                 this.darkMode = localStorage.getItem('darkmode') == "true";
                 document.body.className = this.darkMode ? "dark" : "light"
             },
             methods: {
                 sendRequest() {
+                    // Anti flood request
                     if (this.floodWait) return
 
                     this.floodWait = true
@@ -315,13 +316,15 @@
                         this.floodWait = false
                     }, 5000);
 
+                    // Generate result object
                     let uuid = Math.random().toString()
                     let result = {
                         uuid: uuid,
                         server: this.form.server,
                         action: this.form.action,
                         target: this.form.target,
-                        content: "Loading...",
+                        title: `you@${this.form.server}:~# ${this.form.action} ${this.form.target}`,
+                        content: "",
 
                         move: {
                             down: false,
@@ -335,30 +338,52 @@
                             }
                         }
                     }
+
+                    // Push it to results
                     this.results.push(result)
 
+                    // Link to vue instance result
+                    result = this.results.find(_ => uuid == _.uuid)
+
+                    result.content = result.title + "\nLoading";
+                    let loadingInterval = setInterval(_ => {
+                        result.content += "."
+                    }, 250)
+
+                    // Generate request data
                     let formData = new FormData();
                     formData.append('Router', this.form.server);
                     formData.append('Action', this.form.action);
                     formData.append('IP', this.form.target);
 
+                    // Send request
                     fetch(SERVER_URL, {
                         method: "POST",
                         body: formData
                     })
                         .then(response => {
+                            // If response success then return text or display error
                             if (response.ok) {
                                 return response.text()
                             } else {
-                                console.error(response)
-                                this.results.find(_ => uuid == _.uuid).content = "Request error."
+                                clearInterval(loadingInterval)
+                                result.content += "\nRequest error.\nError : " + response.statusText;
                             }
                         })
                         .then(response => {
-                            this.results.find(_ => uuid == _.uuid).content = response
+                            result.content += "\n"
+                            clearInterval(loadingInterval)
+
+                            let text = [...response];
+                            let interval = setInterval(__ => {
+                                result.content += text.shift()
+                                if (text.length == 0) clearInterval(interval)
+                            }, 10)
                         })
                         .catch(error => {
-                            this.results.find(_ => uuid == _.uuid).content = "Request error.\nError : " + error.message
+                            // Handle error
+                            clearInterval(loadingInterval)
+                            result.content += "\nRequest error.\nError : " + error.message
                         })
                 },
                 copyResult(result) {
