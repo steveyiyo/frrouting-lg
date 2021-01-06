@@ -96,9 +96,26 @@
             cursor: auto;
         }
 
-        input {}
+        select,
+        input {
+            min-width: 30vw;
+            filter: invert(20%) hue-rotate(40deg);
+            padding: 0.4em 0.6em 0.4em 0.6em;
+            font-size: 1.5em;
+            border: 0;
+            width: 100% !important;
+            border-radius: 5px;
+            transition: 0.5s;
+            box-sizing: border-box;
+            -moz-box-sizing: border-box;
+        }
 
-        select {}
+        select:focus,
+        input:focus {
+            -webkit-box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.75);
+            -moz-box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.75);
+            box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.75);
+        }
 
         [v-cloak] {
             opacity: 0;
@@ -275,7 +292,7 @@
                 document.body.addEventListener("mousemove", this.mousemove)
                 document.body.addEventListener("touchmove", this.mousemove)
 
-                this.darkMode = localStorage.getItem('darkmode') ? Boolean(localStorage.getItem('darkmode')) : false;
+                this.darkMode = localStorage.getItem('darkmode') == "true";
                 document.body.className = this.darkMode ? "dark" : ""
             },
             methods: {
