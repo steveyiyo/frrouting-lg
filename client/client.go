@@ -31,11 +31,9 @@ func lg(w http.ResponseWriter, r *http.Request) {
 		fmt.Println("Action: ", Action)
 		fmt.Println("IP: ", IP)
 
-		if IP == "" {
-			if Action == "bgpsummary" {
-				io.WriteString(w, "Checking BGP Summary...\n\n")
-				io.WriteString(w, bgpsummary())
-			}
+		if Action == "bgpsummary" {
+			io.WriteString(w, "Checking BGP Summary...\n\n")
+			io.WriteString(w, bgpsummary())
 		} else {
 			if net.ParseIP(IP) == nil {
 				export := "IP Address: '" + IP + "' - Invalid \n"
@@ -66,10 +64,6 @@ func lg(w http.ResponseWriter, r *http.Request) {
 				if Action == "routev6" {
 					io.WriteString(w, "Checking BGP Route...\n\n")
 					io.WriteString(w, routev6(IP))
-				}
-				if Action == "bgpsummary" {
-					io.WriteString(w, "Checking BGP Summary...\n\n")
-					io.WriteString(w, bgpsummary())
 				}
 			}
 		}
