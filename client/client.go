@@ -163,7 +163,7 @@ func main() {
 	fmt.Print("Port listing at 32991\n")
 	fmt.Print("Repo: https://github.com/steveyiyo/frrouting-lg\n")
 	fmt.Print("Author: SteveYi\n")
-	fmt.Print("Demo: https://network.steveyi.net/looking-glass\n")
+	fmt.Print("Demo: https://lg.steveyi.net\n")
 	fmt.Print("\n")
 	fmt.Print("-------------------\n")
 	fmt.Print("\n")
