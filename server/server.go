@@ -244,6 +244,13 @@ func lg(w http.ResponseWriter, r *http.Request) {
 
 		var router router
 		json.Unmarshal(data, &router)
+
+		for n := range router {
+			if router[n].Name == "jp-router" {
+				fmt.Println("JP Router IP: ", router[n].IP)
+			}
+		}
+
 		// fmt.Println(router)
 
 		Router := "NULL"
