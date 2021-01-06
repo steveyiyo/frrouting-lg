@@ -180,7 +180,7 @@ func lg(w http.ResponseWriter, r *http.Request) {
 					{ name: "EU", value: "eu-router" },
 				]
 		
-				const SERVER_URL = "http://10.121.211.254:32280/"
+				const SERVER_URL = ""
 		
 				const app = {
 					data() {
