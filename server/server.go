@@ -27,7 +27,13 @@ func lg(w http.ResponseWriter, r *http.Request) {
 		fmt.Println(r.URL.Path)
 		p := ".." + r.URL.Path
 		if p == "../" {
-			p = "../static/index.html"
+			p = "../static/v1.html"
+		}
+		if p == "../v1" {
+			p = "../static/v1.html"
+		}
+		if p == "../v2" {
+			p = "../static/v2.html"
 		}
 		http.ServeFile(w, r, p)
 
