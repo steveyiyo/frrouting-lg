@@ -391,8 +391,7 @@
                 copyResult(result) {
                     this.$refs.copyInput.value = result.content;
                     console.log(this.$refs.copyInput.value)
-                    this.$refs.copyInput.select();
-                    document.execCommand('copy');
+                    navigator.clipboard.writeText(this.$refs.copyInput.value);
                 },
                 closeResult(result) {
                     this.focusedResult = null;
