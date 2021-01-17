@@ -18,7 +18,6 @@ type router []struct {
 
 func lg(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
-	w.WriteHeader(http.StatusOK)
 	// io.WriteString(w, "https://github.com/steveyiyo/frrouting-lg")
 
 	r.ParseForm()
