@@ -377,7 +377,9 @@
                             clearInterval(loadingInterval)
 
                             let text = [...response];
-                            result.content += text.shift();
+                            while(text.length != 0) {
+                                result.content += text.shift()
+                            }
                         })
                         .catch(error => {
                             // Handle error
