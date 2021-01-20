@@ -377,10 +377,7 @@
                             clearInterval(loadingInterval)
 
                             let text = [...response];
-                            let interval = setInterval(__ => {
-                                result.content += text.shift()
-                                if (text.length == 0) clearInterval(interval)
-                            }, 10)
+                            result.content += text.shift();
                         })
                         .catch(error => {
                             // Handle error
