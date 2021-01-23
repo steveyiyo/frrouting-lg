@@ -8,6 +8,7 @@ import (
 	"log"
 	"net/http"
 	"net/url"
+	"os"
 )
 
 type router []struct {
@@ -21,22 +22,38 @@ func lg(w http.ResponseWriter, r *http.Request) {
 	// io.WriteString(w, "https://github.com/steveyiyo/frrouting-lg")
 
 	r.ParseForm()
+	fmt.Println("\nIP Address: " + getIP(r))
 	fmt.Println("method:", r.Method)
+	fmt.Println(r.URL.Path)
+	p := "." + r.URL.Path
+
+	exist := "NULL"
+	if _, err := os.Stat(p); err == nil {
+		exist = "1"
+	} else if os.IsNotExist(err) {
+		exist = "0"
+	}
+
 	if r.Method == "GET" {
-
-		fmt.Println(r.URL.Path)
-		p := ".." + r.URL.Path
-		if p == "../" {
-			p = "../static/v1.html"
+		if exist == "1" {
+			if p == "./" {
+				p = "./v1.html"
+			}
+			if p == "./v1" {
+				p = "./v1.html"
+			}
+			if p == "./v2" {
+				p = "./v2.html"
+			}
+			http.ServeFile(w, r, p)
+		} else {
+			w.WriteHeader(http.StatusNotFound)
+			c, err := ioutil.ReadFile("./404.html")
+			if err != nil {
+				fmt.Println(err)
+			}
+			w.Write(c)
 		}
-		if p == "../v1" {
-			p = "../static/v1.html"
-		}
-		if p == "../v2" {
-			p = "../static/v2.html"
-		}
-		http.ServeFile(w, r, p)
-
 	} else if r.Method == "POST" {
 		err := r.ParseMultipartForm(5 * 1024 * 1024 * 1024)
 		if err != nil {
@@ -87,6 +104,14 @@ func lg(w http.ResponseWriter, r *http.Request) {
 		fmt.Println(string(body))
 		io.WriteString(w, string(body))
 	}
+}
+
+func getIP(r *http.Request) string {
+	forwarded := r.Header.Get("X-FORWARDED-FOR")
+	if forwarded != "" {
+		return forwarded
+	}
+	return r.RemoteAddr
 }
 
 func main() {
