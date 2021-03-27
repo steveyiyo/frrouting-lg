@@ -103,13 +103,13 @@
         <label>Router :</label>
         <select v-model="form.Router">
             <option v-for="Router in options.Router" :key="Router.value" :value="Router.value">
-                {{ Router.name }}
+                ${ Router.name }
             </option>
         </select>
         <label>Action :</label>
         <select v-model="form.action">
             <option v-for="action in options.ACTIONS" :key="action.value" :value="action.value">
-                {{ action.name }}
+                ${ action.name }
             </option>
         </select>
         <label>Target :</label>
@@ -117,7 +117,7 @@
         <button @click="sendRequest">Start !</button>
     </form>
         <label>Result :</label>
-        <pre>{{result}}</pre>
+        <pre>${result}</pre>
     </div>
 
     <!-- Scripts -->
@@ -166,6 +166,7 @@
         const SERVER_URL = ""
 
         const app = {
+            delimiters: ['${', '}'],
             data() {
                 return {
                     options: {

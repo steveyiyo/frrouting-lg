@@ -208,31 +208,31 @@
 
     <div class="container" id="app" v-cloak>
         <textarea ref="copyInput" style="opacity:0;height:0;margin:0;padding:0;border:0"></textarea>
-        <button @click="toggleDarkMode">{{darkMode ? "Disable Dark Mode" : "Enable Dark Mode"}}</button>
+        <button @click="toggleDarkMode">${darkMode ? "Disable Dark Mode" : "Enable Dark Mode"}</button>
         <div>
             <div class="result" v-for="result in results" :key="result.uuid" :style="result.move.style">
                 <div class="topbar" @mousedown="mousedown(result,$event)" @mouseup="mouseup(result,$event)"
                     @touchstart="mousedown(result,$event)" @touchend="mouseup(result,$event)">
-                    <span class="title">{{result.title}}</span>
+                    <span class="title">${result.title}</span>
                     <div class="buttons">
                         <div @click="copyResult(result)">Copy</div>
                         <div @click="closeResult(result)">X</div>
                     </div>
                 </div>
-                <pre class="content">{{result.content}}</pre>
+                <pre class="content">${result.content}</pre>
             </div>
         </div>
 
         <label>Server :</label>
         <select v-model="form.server">
             <option v-for="server in options.SERVERS" :key="server.value" :value="server.value">
-                {{ server.name }}
+                ${ server.name }
             </option>
         </select>
         <label>Action :</label>
         <select v-model="form.action">
             <option v-for="action in options.ACTIONS" :key="action.value" :value="action.value">
-                {{ action.name }}
+                ${ action.name }
             </option>
         </select>
         <label>Target :</label>
@@ -279,6 +279,7 @@
         const SERVER_URL = "/"
 
         const app = {
+            delimiters: ['${', '}'],
             data() {
                 return {
                     darkMode: false,
