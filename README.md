@@ -1,5 +1,9 @@
 # FRRouting Looking Glass
 
+**Notice: I'm planning to redesign this project, please follow the [Releases](https://github.com/steveyiyo/frrouting-lg/releases) list.**
+
+---
+
 This is a looking glass for the Internet Routing Daemon "FRRouting"
 
 ### How it work?
